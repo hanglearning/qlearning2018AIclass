@@ -79,13 +79,13 @@ for state in maze:
                     availableActions.append(isWallResult)
         # square is along the south edge, excluding the lower left and lower right corners, having three actions - N, E, W
         elif state.stateSequence in range(2, (COLUMN - 1) + 1):
+            isWallResult = isThisWall(state.stateSequence, 'N')
+            if type(isWallResult) is tuple:
+                availableActions.append(isWallResult)
             isWallResult = isThisWall(state.stateSequence, 'E')
             if type(isWallResult) is tuple:
                 availableActions.append(isWallResult)
             isWallResult = isThisWall(state.stateSequence, 'W')
-            if type(isWallResult) is tuple:
-                availableActions.append(isWallResult)
-            isWallResult = isThisWall(state.stateSequence, 'N')
             if type(isWallResult) is tuple:
                 availableActions.append(isWallResult)
         # square is along the north edge, excluding the upper left and lower right corners, having three actions - E, S, W
@@ -93,18 +93,18 @@ for state in maze:
             isWallResult = isThisWall(state.stateSequence, 'E')
             if type(isWallResult) is tuple:
                 availableActions.append(isWallResult)
-            isWallResult = isThisWall(state.stateSequence, 'W')
+            isWallResult = isThisWall(state.stateSequence, 'S')
             if type(isWallResult) is tuple:
                 availableActions.append(isWallResult)
-            isWallResult = isThisWall(state.stateSequence, 'S')
+            isWallResult = isThisWall(state.stateSequence, 'W')
             if type(isWallResult) is tuple:
                 availableActions.append(isWallResult)
         # square is along the west edge, excluding the upper left and lower left corners, having three actions - N, E, S
         elif state.stateSequence in range(1 * COLUMN + 1, (ROW - 2) * COLUMN + 1 + 1, COLUMN):
-            isWallResult = isThisWall(state.stateSequence, 'E')
+            isWallResult = isThisWall(state.stateSequence, 'N')
             if type(isWallResult) is tuple:
                 availableActions.append(isWallResult)
-            isWallResult = isThisWall(state.stateSequence, 'N')
+            isWallResult = isThisWall(state.stateSequence, 'E')
             if type(isWallResult) is tuple:
                 availableActions.append(isWallResult)
             isWallResult = isThisWall(state.stateSequence, 'S')
@@ -112,10 +112,10 @@ for state in maze:
                 availableActions.append(isWallResult)
         # square is along the east edge, excluding the upper right and lower right corners, having three actions - N, S, W
         elif state.stateSequence in range(2 * COLUMN, (ROW - 1) * COLUMN + 1, COLUMN):
-            isWallResult = isThisWall(state.stateSequence, 'S')
+            isWallResult = isThisWall(state.stateSequence, 'N')
             if type(isWallResult) is tuple:
                 availableActions.append(isWallResult)
-            isWallResult = isThisWall(state.stateSequence, 'N')
+            isWallResult = isThisWall(state.stateSequence, 'S')
             if type(isWallResult) is tuple:
                 availableActions.append(isWallResult)
             isWallResult = isThisWall(state.stateSequence, 'W')
@@ -164,19 +164,6 @@ def bestAction(availableActions, qValues, epsilon):
             return (random.choice(actionWithQVals)[0])
         else:
             return action
-
-
-# def updateQVal(state, action, goToState):
-#     if action == 'N':
-#         currentQVal = state.qValues[0]
-#     elif action == 'E':
-#         currentQVal = state.qValues[1]
-#     elif action == 'S':
-#         currentQVal = state.qValues[2]
-#     elif action == 'W':
-#         currentQVal = state.qValues[3]
-#     goToStateMaxQVal = max(goToState.qValues)
-#     return (1 - LEARNING_RATE) * currentQVal + LEARNING_RATE * (LIVING_REWARD + DISCOUNT_RATE * goToStateMaxQVal)
 
 def updateQValAndReturnGoToState(state, action):
     for actionItem in state.availableActions:
