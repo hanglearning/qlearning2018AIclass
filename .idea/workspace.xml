@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1be35cf1-2834-4989-a59b-542fab302686" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hw4.py" beforeDir="false" afterPath="$PROJECT_DIR$/hw4.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,12 +21,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="2720" />
+          <entry key="py" value="2744" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="2720" />
+          <entry key="Python" value="2744" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -46,8 +47,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/hw4.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="439">
-              <caret line="194" column="26" lean-forward="true" selection-start-line="194" selection-start-column="26" selection-end-line="194" selection-end-column="26" />
+            <state relative-caret-position="644">
+              <caret line="238" lean-forward="true" selection-start-line="238" selection-end-line="238" />
               <folding>
                 <element signature="e#328#363#0" expanded="true" />
               </folding>
@@ -91,6 +92,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="x" value="-1292" />
+    <option name="y" value="-1080" />
     <option name="width" value="1920" />
     <option name="height" value="1080" />
   </component>
@@ -173,11 +176,11 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <frame x="-1292" y="-1080" width="1920" height="1080" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.114869624" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.08583465" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
       <window_info anchor="bottom" id="Python Console" />
@@ -186,7 +189,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32970297" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.29156625" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.23960397" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -215,8 +218,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/hw4.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="439">
-          <caret line="194" column="26" lean-forward="true" selection-start-line="194" selection-start-column="26" selection-end-line="194" selection-end-column="26" />
+        <state relative-caret-position="644">
+          <caret line="238" lean-forward="true" selection-start-line="238" selection-end-line="238" />
           <folding>
             <element signature="e#328#363#0" expanded="true" />
           </folding>

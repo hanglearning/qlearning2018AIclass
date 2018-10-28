@@ -67,7 +67,7 @@ def isThisWall(stateSequence, direction):
             maze[stateSequence - 1].availableActions[3][0] = stateSequence - 1
 
 
-# assign available options to each state excluding donut, forbidden and wall states
+# assign available actions to each state excluding donut, forbidden and wall states
 for state in maze:
     if state.isDonut != True and state.isForbidden != True and state.isWall != True:
         # square is at the four corners, can go to 2 different states based on their location
@@ -163,7 +163,7 @@ def updateQValAndReturnGoingState(state, action):
     return goingState
 
 
-# update the value of the exit states - donut and forbidden
+# update the value of the exit states - donut or forbidden
 def updateValExitStates(state):
     if state.isDonut == True:
         exitReward = DONUT_REWARD
