@@ -1,7 +1,7 @@
 # Hang Chen
 # CISC681 hw4 2018F
 
-# This script utilizes recordclass library(https://pypi.org/project/recordclass/)
+# This script utilizes recordclass library (https://pypi.org/project/recordclass/)
 # which you may not have in your environment.
 # Please run '$ pip install recordclass' or '$ pip3 install recordclass' to install,
 # or check out an online version of this homework at
@@ -222,8 +222,8 @@ def printQVals(stateSequence):
     print('← ', maze[stateSequence - 1].qValues[3])
 
 # debug - print the Q values of every state
-for state in maze:
-    print(state.stateSequence, state.qValues)
+# for state in maze:
+#     print(state.stateSequence, state.qValues)
 
 # output based on the input arguments
 if len(arguments) == 5:
