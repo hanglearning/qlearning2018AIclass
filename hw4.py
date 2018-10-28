@@ -7,7 +7,7 @@ import random
 import turtle
 
 # Settings
-ROW = 4
+ROW = 5
 COLUMN = 5
 STATE_SPACE = ROW * COLUMN
 START_STATE = 1
@@ -66,18 +66,30 @@ for state in maze:
                 isWallResult = isThisWall(state.stateSequence, 'E')
                 if type(isWallResult) is tuple:
                     availableActions.append(isWallResult)
+                # lower left corner
+                if state.stateSequence == 1:
+                    isWallResult = isThisWall(state.stateSequence, 'N')
+                    if type(isWallResult) is tuple:
+                        availableActions.append(isWallResult)
+                # upper left corner
+                elif state.stateSequence == (ROW - 1) * COLUMN + 1:
+                    isWallResult = isThisWall(state.stateSequence, 'S')
+                    if type(isWallResult) is tuple:
+                        availableActions.append(isWallResult)
             elif state.stateSequence % COLUMN == 0:
                 isWallResult = isThisWall(state.stateSequence, 'W')
                 if type(isWallResult) is tuple:
                     availableActions.append(isWallResult)
-            if state.stateSequence % ROW == 1:
-                isWallResult = isThisWall(state.stateSequence, 'N')
-                if type(isWallResult) is tuple:
-                    availableActions.append(isWallResult)
-            elif state.stateSequence % ROW == 0:
-                isWallResult = isThisWall(state.stateSequence, 'S')
-                if type(isWallResult) is tuple:
-                    availableActions.append(isWallResult)
+                # lower right corner
+                if state.stateSequence == COLUMN:
+                    isWallResult = isThisWall(state.stateSequence, 'N')
+                    if type(isWallResult) is tuple:
+                        availableActions.append(isWallResult)
+                # upper right corner
+                elif state.stateSequence == ROW * COLUMN:
+                    isWallResult = isThisWall(state.stateSequence, 'S')
+                    if type(isWallResult) is tuple:
+                        availableActions.append(isWallResult)
         # square is along the south edge, excluding the lower left and lower right corners, having three actions - N, E, W
         elif state.stateSequence in range(2, (COLUMN - 1) + 1):
             isWallResult = isThisWall(state.stateSequence, 'N')
@@ -140,39 +152,8 @@ for state in maze:
         state.availableActions = availableActions
 
 # debug - print the initial maze
-for state in maze:
-    print(state)
-
-# turtle draw
-import turtle
-
-# to draw a square, or eventually a turtle, you need to do the things below
-# https://stackoverflow.com/questions/46081500/draw-a-square-in-python-turtle
-def draw_square():
-    """ draw square for turtles """
-
-    # to draw a square you want to : move forward, turn right,
-    #  move forward, turn right,move forward turn right
-
-    brad = turtle.Turtle()
-    brad.up()
-    brad.goto(-1000, -1000)
-    brad.forward(100)  # forward takes a number which is the distance to move
-    brad.right(90)  # turn right
-    brad.forward(100)
-    brad.right(90)
-    brad.forward(100)
-    brad.right(90)
-    brad.forward(100)
-    brad.right(90)
-
-window = turtle.Screen()
-# this is the background where the turtle will move
-window.bgcolor("white") # the color of the window
-
-draw_square()
-
-window.exitonclick()  # click the screen to close it
+# for state in maze:
+#     print(state)
 
 def bestAction(availableActions, qValues, epsilon):
     # qValues = [N, E, S, W]
