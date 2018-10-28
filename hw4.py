@@ -92,30 +92,24 @@ for state in maze:
                     isThisWall(state.stateSequence, 'S')
         # square is along the south edge, excluding the lower left and lower right corners, having three actions - N, E, W
         elif state.stateSequence in range(2, (COLUMN - 1) + 1):
-            isThisWall(state.stateSequence, 'N')
-            isThisWall(state.stateSequence, 'E')
-            isThisWall(state.stateSequence, 'W')
+            for direction in ['N', 'E', 'W']:
+                isThisWall(state.stateSequence, direction)
         # square is along the north edge, excluding the upper left and lower right corners, having three actions - E, S, W
         elif state.stateSequence in range((ROW - 1) * COLUMN + 1 + 1, (ROW * COLUMN) - 1 + 1):
-            isThisWall(state.stateSequence, 'E')
-            isThisWall(state.stateSequence, 'S')
-            isThisWall(state.stateSequence, 'W')
+            for direction in ['E', 'S', 'W']:
+                isThisWall(state.stateSequence, direction)
         # square is along the west edge, excluding the upper left and lower left corners, having three actions - N, E, S
         elif state.stateSequence in range(1 * COLUMN + 1, (ROW - 2) * COLUMN + 1 + 1, COLUMN):
-            isThisWall(state.stateSequence, 'N')
-            isThisWall(state.stateSequence, 'E')
-            isThisWall(state.stateSequence, 'S')
+            for direction in ['N', 'E', 'S']:
+                isThisWall(state.stateSequence, direction)
         # square is along the east edge, excluding the upper right and lower right corners, having three actions - N, S, W
         elif state.stateSequence in range(2 * COLUMN, (ROW - 1) * COLUMN + 1, COLUMN):
-            isThisWall(state.stateSequence, 'N')
-            isThisWall(state.stateSequence, 'S')
-            isThisWall(state.stateSequence, 'W')
+            for direction in ['N', 'S', 'W']:
+                isThisWall(state.stateSequence, direction)
         # square is not on the edge, having four actions - N, E, S, W
         else:
-            isThisWall(state.stateSequence, 'N')
-            isThisWall(state.stateSequence, 'E')
-            isThisWall(state.stateSequence, 'S')
-            isThisWall(state.stateSequence, 'W')
+            for direction in ['N', 'E', 'S', 'W']:
+                isThisWall(state.stateSequence, direction)
 
 # based on the Q-values of the current state, calculate the best action
 # if epsilon falls into the probability then a random action is chosen
@@ -228,8 +222,8 @@ def printQVals(stateSequence):
     print('← ', maze[stateSequence - 1].qValues[3])
 
 # debug - print the Q values of every state
-# for state in maze:
-#     print(state.stateSequence, state.qValues)
+for state in maze:
+    print(state.stateSequence, state.qValues)
 
 # output based on the input arguments
 if len(arguments) == 5:
