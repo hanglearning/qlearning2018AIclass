@@ -12,8 +12,8 @@ import sys
 import random
 
 # Settings - you may alternative the settings including the dimensions of the board
-ROW = 5
-COLUMN = 5
+ROW = 3
+COLUMN = 4
 STATE_SPACE = ROW * COLUMN
 START_STATE = 1
 ITERATIONS = 10000
@@ -38,7 +38,9 @@ maze = []
 
 # initialize the maze with 12 states
 for i in range(1, STATE_SPACE + 1):
-    state = State(i, [], [0, 0, 0, 0], False, False, False)
+    # availableActions = [[stateSequence, NESW]...]
+    # qValues = [N, E, S, W]
+    state = State(i, [[0, 'N'], [0, 'E'], [0, 'S'], [0, 'W']], [0, 0, 0, 0], False, False, False)
     maze.append(state)
 
 # assign the donut, forbidden and wall locations
@@ -46,155 +48,101 @@ maze[donutLoc - 1].isDonut = True
 maze[forbiddenLoc - 1].isForbidden = True
 maze[wallLoc - 1].isWall = True
 
-# justify the wall location to see if the going state is a wall
+
+# justify the wall location to see if the going state is a wall.
+# if it's not a wall, update the available actions for the current state
 def isThisWall(stateSequence, direction):
-    if direction == 'E':
-        if maze[stateSequence - 1 + 1].isWall == False:
-            return (stateSequence + 1, 'E')
-    elif direction == 'W':
-        if maze[stateSequence - 1 - 1].isWall == False:
-            return (stateSequence - 1, 'W')
-    elif direction == 'N':
+    if direction == 'N':
         if maze[stateSequence - 1 + COLUMN].isWall == False:
-            return (stateSequence + COLUMN, 'N')
+            maze[stateSequence - 1].availableActions[0][0] = stateSequence + COLUMN
+    elif direction == 'E':
+        if maze[stateSequence - 1 + 1].isWall == False:
+            maze[stateSequence - 1].availableActions[1][0] = stateSequence + 1
     elif direction == 'S':
         if maze[stateSequence - 1 - COLUMN].isWall == False:
-            return (stateSequence - COLUMN, 'S')
-    return True
+            maze[stateSequence - 1].availableActions[2][0] = stateSequence - COLUMN
+    elif direction == 'W':
+        if maze[stateSequence - 1 - 1].isWall == False:
+            maze[stateSequence - 1].availableActions[3][0] = stateSequence - 1
 
 
 # assign available options to each state excluding donut, forbidden and wall states
 for state in maze:
     if state.isDonut != True and state.isForbidden != True and state.isWall != True:
-        availableActions = []
-        # square is at the four corners, having two actions based on their location
+        # square is at the four corners, can go to 2 different states based on their location
         if state.stateSequence in [1, COLUMN, (ROW - 1) * COLUMN + 1, ROW * COLUMN]:
             if state.stateSequence % COLUMN == 1:
-                isWallResult = isThisWall(state.stateSequence, 'E')
-                # under an action - if the going state is not wall, add this action to availableActions
+                # under an action - if the going state is not wall,
+                # isThisWall() will add this action to availableActions
                 # same functionality if similar coding block occurs in this loop
-                if type(isWallResult) is tuple:
-                    availableActions.append(isWallResult)
+                isThisWall(state.stateSequence, 'E')
                 # lower left corner
                 if state.stateSequence == 1:
-                    isWallResult = isThisWall(state.stateSequence, 'N')
-                    if type(isWallResult) is tuple:
-                        availableActions.append(isWallResult)
+                    isThisWall(state.stateSequence, 'N')
                 # upper left corner
                 elif state.stateSequence == (ROW - 1) * COLUMN + 1:
-                    isWallResult = isThisWall(state.stateSequence, 'S')
-                    if type(isWallResult) is tuple:
-                        availableActions.append(isWallResult)
+                    isThisWall(state.stateSequence, 'S')
             elif state.stateSequence % COLUMN == 0:
-                isWallResult = isThisWall(state.stateSequence, 'W')
-                if type(isWallResult) is tuple:
-                    availableActions.append(isWallResult)
+                isThisWall(state.stateSequence, 'W')
                 # lower right corner
                 if state.stateSequence == COLUMN:
-                    isWallResult = isThisWall(state.stateSequence, 'N')
-                    if type(isWallResult) is tuple:
-                        availableActions.append(isWallResult)
+                    isThisWall(state.stateSequence, 'N')
                 # upper right corner
                 elif state.stateSequence == ROW * COLUMN:
-                    isWallResult = isThisWall(state.stateSequence, 'S')
-                    if type(isWallResult) is tuple:
-                        availableActions.append(isWallResult)
+                    isThisWall(state.stateSequence, 'S')
         # square is along the south edge, excluding the lower left and lower right corners, having three actions - N, E, W
         elif state.stateSequence in range(2, (COLUMN - 1) + 1):
-            isWallResult = isThisWall(state.stateSequence, 'N')
-            if type(isWallResult) is tuple:
-                availableActions.append(isWallResult)
-            isWallResult = isThisWall(state.stateSequence, 'E')
-            if type(isWallResult) is tuple:
-                availableActions.append(isWallResult)
-            isWallResult = isThisWall(state.stateSequence, 'W')
-            if type(isWallResult) is tuple:
-                availableActions.append(isWallResult)
+            isThisWall(state.stateSequence, 'N')
+            isThisWall(state.stateSequence, 'E')
+            isThisWall(state.stateSequence, 'W')
         # square is along the north edge, excluding the upper left and lower right corners, having three actions - E, S, W
         elif state.stateSequence in range((ROW - 1) * COLUMN + 1 + 1, (ROW * COLUMN) - 1 + 1):
-            isWallResult = isThisWall(state.stateSequence, 'E')
-            if type(isWallResult) is tuple:
-                availableActions.append(isWallResult)
-            isWallResult = isThisWall(state.stateSequence, 'S')
-            if type(isWallResult) is tuple:
-                availableActions.append(isWallResult)
-            isWallResult = isThisWall(state.stateSequence, 'W')
-            if type(isWallResult) is tuple:
-                availableActions.append(isWallResult)
+            isThisWall(state.stateSequence, 'E')
+            isThisWall(state.stateSequence, 'S')
+            isThisWall(state.stateSequence, 'W')
         # square is along the west edge, excluding the upper left and lower left corners, having three actions - N, E, S
         elif state.stateSequence in range(1 * COLUMN + 1, (ROW - 2) * COLUMN + 1 + 1, COLUMN):
-            isWallResult = isThisWall(state.stateSequence, 'N')
-            if type(isWallResult) is tuple:
-                availableActions.append(isWallResult)
-            isWallResult = isThisWall(state.stateSequence, 'E')
-            if type(isWallResult) is tuple:
-                availableActions.append(isWallResult)
-            isWallResult = isThisWall(state.stateSequence, 'S')
-            if type(isWallResult) is tuple:
-                availableActions.append(isWallResult)
+            isThisWall(state.stateSequence, 'N')
+            isThisWall(state.stateSequence, 'E')
+            isThisWall(state.stateSequence, 'S')
         # square is along the east edge, excluding the upper right and lower right corners, having three actions - N, S, W
         elif state.stateSequence in range(2 * COLUMN, (ROW - 1) * COLUMN + 1, COLUMN):
-            isWallResult = isThisWall(state.stateSequence, 'N')
-            if type(isWallResult) is tuple:
-                availableActions.append(isWallResult)
-            isWallResult = isThisWall(state.stateSequence, 'S')
-            if type(isWallResult) is tuple:
-                availableActions.append(isWallResult)
-            isWallResult = isThisWall(state.stateSequence, 'W')
-            if type(isWallResult) is tuple:
-                availableActions.append(isWallResult)
+            isThisWall(state.stateSequence, 'N')
+            isThisWall(state.stateSequence, 'S')
+            isThisWall(state.stateSequence, 'W')
         # square is not on the edge, having four actions - N, E, S, W
         else:
-            isWallResult = isThisWall(state.stateSequence, 'N')
-            if type(isWallResult) is tuple:
-                availableActions.append(isWallResult)
-            isWallResult = isThisWall(state.stateSequence, 'E')
-            if type(isWallResult) is tuple:
-                availableActions.append(isWallResult)
-            isWallResult = isThisWall(state.stateSequence, 'S')
-            if type(isWallResult) is tuple:
-                availableActions.append(isWallResult)
-            isWallResult = isThisWall(state.stateSequence, 'W')
-            if type(isWallResult) is tuple:
-                availableActions.append(isWallResult)
-        # give the available actions to the state
-        state.availableActions = availableActions
-
-# debug - print the initial maze
-# for state in maze:
-#     print(state)
+            isThisWall(state.stateSequence, 'N')
+            isThisWall(state.stateSequence, 'E')
+            isThisWall(state.stateSequence, 'S')
+            isThisWall(state.stateSequence, 'W')
 
 # based on the Q-values of the current state, calculate the best action
 # if epsilon falls into the probability then a random action is chosen
-def bestAction(availableActions, qValues, epsilon):
-    # qValues = [N, E, S, W]
-    actionWithQVals = []
-    for actionItem in availableActions:
-        if actionItem[1] == 'N':
-            actionWithQVals.append(['N', qValues[0]])
-        elif actionItem[1] == 'E':
-            actionWithQVals.append(['E', qValues[1]])
-        elif actionItem[1] == 'S':
-            actionWithQVals.append(['S', qValues[2]])
-        else:
-            actionWithQVals.append(['W', qValues[3]])
-    action, qVal = max(actionWithQVals, key=lambda item: item[1])
+def bestAction(qValues, epsilon):
+    direction = qValues.index(max(qValues))
+    if direction == 0:
+        action = 'N'
+    elif direction == 1:
+        action = 'E'
+    elif direction == 1:
+        action = 'S'
+    else:
+        action = 'W'
     if epsilon == 0:
         return action
     else:
         probability = random.uniform(0, 1)
         if probability <= epsilon:
-            return (random.choice(actionWithQVals)[0])
+            return random.choice(['N', 'E', 'S', 'W'])
         else:
             return action
 
+
 # the function updates the Q-values for the current state and
 # return the going state based on the action received from bestAction()
-def updateQValAndReturnGoToState(state, action):
-    for actionItem in state.availableActions:
-        if actionItem[1] == action:
-            goToState = actionItem[0]
-    goToStateMaxQVal = max(maze[goToState - 1].qValues)
+def updateQValAndReturnGoingState(state, action):
+
     if action == 'N':
         qValueIndex = 0
     elif action == 'E':
@@ -203,9 +151,22 @@ def updateQValAndReturnGoToState(state, action):
         qValueIndex = 2
     elif action == 'W':
         qValueIndex = 3
+    for actionItem in state.availableActions:
+        if actionItem[1] == action:
+            goingState = actionItem[0]
+
+    if goingState == 0:
+        # this means the going state is either a wall or boundary
+        # in this case, the agent bounces back, which means s' = s
+        # the max Q value of the going state becomes its own max Q value
+        goingStateMaxQVal = max(state.qValues)
+    else:
+        goingStateMaxQVal = max(maze[goingState - 1].qValues)
+
     state.qValues[qValueIndex] = (1 - LEARNING_RATE) * state.qValues[qValueIndex] + LEARNING_RATE * (
-                LIVING_REWARD + DISCOUNT_RATE * goToStateMaxQVal)
-    return goToState
+            LIVING_REWARD + DISCOUNT_RATE * goingStateMaxQVal)
+    return goingState
+
 
 # update the value of the exit states - donut and forbidden
 def updateValExitStates(state):
@@ -227,16 +188,18 @@ while i < ITERATIONS:
             epsilon = EPSILON * (1 - i / EPSILON_CONVERGENCE)
         else:
             epsilon = 0
-        action = bestAction(state.availableActions, state.qValues, epsilon)
-        sequence = updateQValAndReturnGoToState(state, action)
+        action = bestAction(state.qValues, epsilon)
+        sequence = updateQValAndReturnGoingState(state, action)
         state = maze[sequence - 1]
     # reach exit state, update value and restart if iteration is still on going
     updateValExitStates(state)
     sequence = START_STATE
     i += 1
 
+
 # OUTPUT1 - print the optimal policy
 def printPolicy():
+    print('')
     print("Q-values after", ITERATIONS, "iterations:\n")
     for state in maze:
         if state.isDonut == False and state.isForbidden == False and state.isWall == False:
@@ -253,8 +216,10 @@ def printPolicy():
             action, qVal = max(availableActions, key=lambda item: item[1])
             print(state.stateSequence, ' ', action)
 
+
 # OUTPUT2 - print the Q-values of the designated state
 def printQVals(stateSequence):
+    print("")
     print("Q-values after", ITERATIONS, "iterations:\n")
     print("State", stateSequence, "has optimal Q-values:")
     print('↑ ', maze[stateSequence - 1].qValues[0])
@@ -262,6 +227,9 @@ def printQVals(stateSequence):
     print('↓ ', maze[stateSequence - 1].qValues[2])
     print('← ', maze[stateSequence - 1].qValues[3])
 
+# debug - print the Q values of every state
+# for state in maze:
+#     print(state.stateSequence, state.qValues)
 
 # output based on the input arguments
 if len(arguments) == 5:
