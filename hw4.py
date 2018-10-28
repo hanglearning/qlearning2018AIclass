@@ -4,10 +4,11 @@ from recordclass import recordclass
 # https://www.google.com/search?q=sys.argv&oq=sys.argv&aqs=chrome..69i57j69i61j0l4.329j0j4&sourceid=chrome&ie=UTF-8
 import sys
 import random
+import turtle
 
 # Settings
-ROW = 3
-COLUMN = 4
+ROW = 4
+COLUMN = 5
 STATE_SPACE = ROW * COLUMN
 START_STATE = 1
 ITERATIONS = 10000
@@ -141,6 +142,37 @@ for state in maze:
 # debug - print the initial maze
 for state in maze:
     print(state)
+
+# turtle draw
+import turtle
+
+# to draw a square, or eventually a turtle, you need to do the things below
+# https://stackoverflow.com/questions/46081500/draw-a-square-in-python-turtle
+def draw_square():
+    """ draw square for turtles """
+
+    # to draw a square you want to : move forward, turn right,
+    #  move forward, turn right,move forward turn right
+
+    brad = turtle.Turtle()
+    brad.up()
+    brad.goto(-1000, -1000)
+    brad.forward(100)  # forward takes a number which is the distance to move
+    brad.right(90)  # turn right
+    brad.forward(100)
+    brad.right(90)
+    brad.forward(100)
+    brad.right(90)
+    brad.forward(100)
+    brad.right(90)
+
+window = turtle.Screen()
+# this is the background where the turtle will move
+window.bgcolor("white") # the color of the window
+
+draw_square()
+
+window.exitonclick()  # click the screen to close it
 
 def bestAction(availableActions, qValues, epsilon):
     # qValues = [N, E, S, W]
