@@ -119,7 +119,7 @@ def bestAction(qValues, epsilon):
         action = 'N'
     elif direction == 1:
         action = 'E'
-    elif direction == 1:
+    elif direction == 2:
         action = 'S'
     else:
         action = 'W'
