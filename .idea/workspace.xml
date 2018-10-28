@@ -20,12 +20,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="366" />
+          <entry key="py" value="1873" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="366" />
+          <entry key="Python" value="1873" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -46,10 +46,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/hw4.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-5479">
-              <caret line="15" column="19" lean-forward="true" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="19" />
+            <state relative-caret-position="-173">
+              <caret line="19" column="16" selection-start-line="19" selection-start-column="16" selection-end-line="19" selection-end-column="16" />
               <folding>
-                <element signature="e#90#125#0" expanded="true" />
+                <element signature="e#328#363#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -84,8 +84,6 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="x" value="-1292" />
-    <option name="y" value="-1080" />
     <option name="width" value="1920" />
     <option name="height" value="1080" />
   </component>
@@ -168,11 +166,11 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1292" y="-1080" width="1920" height="1080" extended-state="0" />
+    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24960506" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.114869624" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
       <window_info anchor="bottom" id="Python Console" />
@@ -181,7 +179,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32970297" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.23960397" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.29156625" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -210,10 +208,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/hw4.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5479">
-          <caret line="15" column="19" lean-forward="true" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="19" />
+        <state relative-caret-position="-173">
+          <caret line="19" column="16" selection-start-line="19" selection-start-column="16" selection-end-line="19" selection-end-column="16" />
           <folding>
-            <element signature="e#90#125#0" expanded="true" />
+            <element signature="e#328#363#0" expanded="true" />
           </folding>
         </state>
       </provider>

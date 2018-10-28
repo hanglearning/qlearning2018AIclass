@@ -1,12 +1,17 @@
-# https://stackoverflow.com/questions/29290359/existence-of-mutable-named-tuple-in-python
+# Hang Chen
+# CISC681 hw4 2018F
+
+# This script utilizes recordclass library(https://pypi.org/project/recordclass/)
+# which you may not have in your environment.
+# Please run '$ pip install recordclass' or '$ pip3 install recordclass' to install,
+# or check out an online version of this homework at
+# https://repl.it/@hanglearning/681hw4?language=python3
+# Please abide by the input format and run with $ python hw4.py <input>
 from recordclass import recordclass
-# https://www.tutorialspoint.com/python/python_command_line_arguments.htm
-# https://www.google.com/search?q=sys.argv&oq=sys.argv&aqs=chrome..69i57j69i61j0l4.329j0j4&sourceid=chrome&ie=UTF-8
 import sys
 import random
-import turtle
 
-# Settings
+# Settings - you may alternative the settings including the dimensions of the board
 ROW = 5
 COLUMN = 5
 STATE_SPACE = ROW * COLUMN
@@ -17,7 +22,7 @@ DISCOUNT_RATE = 0.5
 LEARNING_RATE = 0.1
 DONUT_REWARD = 100
 FORBIDDEN_REWARD = -100
-EPSILON = 0.2
+EPSILON = 0.1
 EPSILON_CONVERGENCE = 10000
 
 # get user inputs
@@ -26,7 +31,9 @@ donutLoc = int(arguments[1])
 forbiddenLoc = int(arguments[2])
 wallLoc = int(arguments[3])
 
+# base class for the state
 State = recordclass('State', 'stateSequence availableActions qValues isDonut isForbidden isWall')
+# states are held in a maze array
 maze = []
 
 # initialize the maze with 12 states
@@ -39,7 +46,7 @@ maze[donutLoc - 1].isDonut = True
 maze[forbiddenLoc - 1].isForbidden = True
 maze[wallLoc - 1].isWall = True
 
-# justify the wall location
+# justify the wall location to see if the going state is a wall
 def isThisWall(stateSequence, direction):
     if direction == 'E':
         if maze[stateSequence - 1 + 1].isWall == False:
@@ -56,14 +63,16 @@ def isThisWall(stateSequence, direction):
     return True
 
 
-# Assign available options to each state
+# assign available options to each state excluding donut, forbidden and wall states
 for state in maze:
     if state.isDonut != True and state.isForbidden != True and state.isWall != True:
         availableActions = []
-        # square is at the four corners, having two actions
+        # square is at the four corners, having two actions based on their location
         if state.stateSequence in [1, COLUMN, (ROW - 1) * COLUMN + 1, ROW * COLUMN]:
             if state.stateSequence % COLUMN == 1:
                 isWallResult = isThisWall(state.stateSequence, 'E')
+                # under an action - if the going state is not wall, add this action to availableActions
+                # same functionality if similar coding block occurs in this loop
                 if type(isWallResult) is tuple:
                     availableActions.append(isWallResult)
                 # lower left corner
@@ -148,13 +157,15 @@ for state in maze:
             isWallResult = isThisWall(state.stateSequence, 'W')
             if type(isWallResult) is tuple:
                 availableActions.append(isWallResult)
-
+        # give the available actions to the state
         state.availableActions = availableActions
 
 # debug - print the initial maze
 # for state in maze:
 #     print(state)
 
+# based on the Q-values of the current state, calculate the best action
+# if epsilon falls into the probability then a random action is chosen
 def bestAction(availableActions, qValues, epsilon):
     # qValues = [N, E, S, W]
     actionWithQVals = []
@@ -167,7 +178,6 @@ def bestAction(availableActions, qValues, epsilon):
             actionWithQVals.append(['S', qValues[2]])
         else:
             actionWithQVals.append(['W', qValues[3]])
-    # https://stackoverflow.com/questions/39748916/find-maximum-value-and-index-in-a-python-list
     action, qVal = max(actionWithQVals, key=lambda item: item[1])
     if epsilon == 0:
         return action
@@ -178,6 +188,8 @@ def bestAction(availableActions, qValues, epsilon):
         else:
             return action
 
+# the function updates the Q-values for the current state and
+# return the going state based on the action received from bestAction()
 def updateQValAndReturnGoToState(state, action):
     for actionItem in state.availableActions:
         if actionItem[1] == action:
@@ -195,22 +207,22 @@ def updateQValAndReturnGoToState(state, action):
                 LIVING_REWARD + DISCOUNT_RATE * goToStateMaxQVal)
     return goToState
 
-
-def updateQValExitStates(state):
+# update the value of the exit states - donut and forbidden
+def updateValExitStates(state):
     if state.isDonut == True:
         exitReward = DONUT_REWARD
     elif state.isForbidden == True:
         exitReward = FORBIDDEN_REWARD
-    state.qValues[0] = (1 - LEARNING_RATE) * state.qValues[0] + LEARNING_RATE * (LIVING_REWARD + exitReward)
+    state.qValues[0] = (1 - LEARNING_RATE) * state.qValues[0] + LEARNING_RATE * (exitReward)
 
 
-sequence = START_STATE
 # start Q learning
 i = 0
+sequence = START_STATE
 while i < ITERATIONS:
     state = maze[sequence - 1]
     while state.isDonut != True and state.isForbidden != True:
-        # not the exit state
+        # not the exit state, update Q values and go to the next state
         if i < EPSILON_CONVERGENCE:
             epsilon = EPSILON * (1 - i / EPSILON_CONVERGENCE)
         else:
@@ -218,11 +230,12 @@ while i < ITERATIONS:
         action = bestAction(state.availableActions, state.qValues, epsilon)
         sequence = updateQValAndReturnGoToState(state, action)
         state = maze[sequence - 1]
-    updateQValExitStates(state)
+    # reach exit state, update value and restart if iteration is still on going
+    updateValExitStates(state)
     sequence = START_STATE
     i += 1
 
-
+# OUTPUT1 - print the optimal policy
 def printPolicy():
     print("Q-values after", ITERATIONS, "iterations:\n")
     for state in maze:
@@ -240,7 +253,7 @@ def printPolicy():
             action, qVal = max(availableActions, key=lambda item: item[1])
             print(state.stateSequence, ' ', action)
 
-
+# OUTPUT2 - print the Q-values of the designated state
 def printQVals(stateSequence):
     print("Q-values after", ITERATIONS, "iterations:\n")
     print("State", stateSequence, "has optimal Q-values:")
@@ -250,6 +263,7 @@ def printQVals(stateSequence):
     print('← ', maze[stateSequence - 1].qValues[3])
 
 
+# output based on the input arguments
 if len(arguments) == 5:
     printPolicy()
 else:
