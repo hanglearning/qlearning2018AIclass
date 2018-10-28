@@ -23,6 +23,7 @@ LEARNING_RATE = 0.1
 DONUT_REWARD = 100
 FORBIDDEN_REWARD = -100
 EPSILON = 0.1
+IS_EPSILON_CONVERGENCE = True
 EPSILON_CONVERGENCE = 10000
 
 # get user inputs
@@ -176,12 +177,16 @@ i = 0
 sequence = START_STATE
 while i < ITERATIONS:
     state = maze[sequence - 1]
-    while state.isDonut != True and state.isForbidden != True:
-        # not the exit state, update Q values and go to the next state
+    # epsilon convergence
+    if IS_EPSILON_CONVERGENCE:
         if i < EPSILON_CONVERGENCE:
             epsilon = EPSILON * (1 - i / EPSILON_CONVERGENCE)
         else:
             epsilon = 0
+    else:
+        epsilon = EPSILON
+    while state.isDonut != True and state.isForbidden != True:
+        # not the exit state, update Q values and go to the next state
         action = bestAction(state.qValues, epsilon)
         sequence = updateQValAndReturnGoingState(state, action)
         state = maze[sequence - 1]
